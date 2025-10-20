@@ -48,21 +48,26 @@ O modelo escolhido foi um **Perceptron Multicamadas (MLP)** com **duas camadas o
 Após treinar o modelo, é possível realizar previsões com o script de inferência padronizado:
 
 ```bash
-python predict.py <modelo.joblib> <arquivo_de_entrada.csv> [arquivo_de_saida.csv] 
+python predict.py <modelo.joblib> <arquivo_de_entrada.csv> [arquivo_de_saida.csv]
+```
 
 Exemplo:
 
+```bash
 python predict.py models/mlp_two_moons.joblib datasets/two_moons.csv preds.csv
+```
 
+O script gera um arquivo `preds.csv` com as previsões (`y_pred`).
 
-O script gera um arquivo preds.csv com as previsões (y_pred).
+---
 
-🧩 Modelo Utilizado
+## 🧩 Modelo Utilizado
 
-Tipo: MLPClassifier (Multi-Layer Perceptron)
-Biblioteca: scikit-learn
-Parâmetros:
+**Tipo:** MLPClassifier (Multi-Layer Perceptron)  
+**Biblioteca:** scikit-learn  
+**Parâmetros:**
 
+```python
 MLPClassifier(
     hidden_layer_sizes=(5,5),
     activation='relu',
@@ -70,69 +75,71 @@ MLPClassifier(
     max_iter=1000,
     random_state=42
 )
+```
 
+O modelo foi avaliado com validação cruzada **StratifiedKFold (k=5)** e 30 medições de tempo por amostra, conforme o edital da competição.
 
-O modelo foi avaliado com validação cruzada StratifiedKFold (k=5) e 30 medições de tempo por amostra, conforme o edital da competição.
+---
 
-📈 Métricas Avaliadas
+## 📈 Métricas Avaliadas
 
 Para cada dataset:
 
-Acurácia
+- **Acurácia**
+- **Precisão (macro)**
+- **Recall (macro)**
+- **F1-score (macro)**
+- **Tempo médio de inferência por amostra**
+- **Desvios-padrão** das métricas nas dobras da validação cruzada
 
-Precisão (macro)
+O score final `S` segue o critério:
 
-Recall (macro)
-
-F1-score (macro)
-
-Tempo médio de inferência por amostra
-
-Desvios-padrão das métricas nas dobras da validação cruzada
-
-O score final S segue o critério:
-
+```
 S = 0.70·M - 0.20·σM + 0.10·T*
-
+```
 
 onde:
+- `M` é a média das métricas (Acc, Prec, Rec, F1);
+- `σM` é a média dos desvios-padrão;
+- `T*` é a normalização min–max inversa do tempo médio de inferência.
 
-M é a média das métricas (Acc, Prec, Rec, F1);
+---
 
-σM é a média dos desvios-padrão;
-
-T* é a normalização min–max inversa do tempo médio de inferência.
-
-🧾 Dependências
+## 🧾 Dependências
 
 As principais bibliotecas utilizadas foram:
 
+```
 scikit-learn==1.5.0
 pandas==2.2.2
 numpy==1.26.4
 matplotlib==3.9.0
 wget==3.2
 joblib==1.4.2
-
+```
 
 No Colab, as dependências são instaladas automaticamente com:
 
+```python
 !pip install -q scikit-learn pandas matplotlib numpy wget joblib
+```
 
-🔒 Reprodutibilidade
+---
 
-Todas as sementes aleatórias (numpy, random) foram fixadas com SEED = 42.
+## 🔒 Reprodutibilidade
 
-O notebook é totalmente reprodutível e roda do zero.
+- Todas as sementes aleatórias (`numpy`, `random`) foram fixadas com `SEED = 42`.  
+- O notebook é **totalmente reprodutível** e roda do zero.  
+- Não foram utilizados frameworks AutoML.  
+- Foram respeitados os protocolos de validação e as regras do edital.
 
-Não foram utilizados frameworks AutoML.
+---
 
-Foram respeitados os protocolos de validação e as regras do edital.
+## ✍️ Observações
 
-✍️ Observações
+- O modelo é leve, estável e possui baixo tempo de inferência.  
+- O relatório técnico com métricas e análises está incluído em PDF na submissão.  
+- Este repositório segue as regras de submissão descritas no edital da competição.
 
-O modelo é leve, estável e possui baixo tempo de inferência.
+---
 
-O relatório técnico com métricas e análises está incluído em PDF na submissão.
-
-Este repositório segue as regras de submissão descritas no edital da competição.
